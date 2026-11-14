@@ -24,8 +24,23 @@ public class GameLogic : MonoBehaviour
     void Start()
     {
         score = 0;
+        gameActive = false;
         setScoreText();
+        timerText.text = "Press Start";
+    }
+
+    public void StartGame()
+    {
+        score = 0;
+        handsRaised = false;
+
         startTime = Time.time;
+        gameActive = true;
+
+        setScoreText();
+
+        timerText.text = "Time: " + gameDuration.ToString();
+        Debug.Log("Game Started!");
     }
 
     // Update is called once per frame
@@ -35,9 +50,12 @@ public class GameLogic : MonoBehaviour
         if (Time.time - startTime >= gameDuration)
         {
             gameActive = false;
+            timerText.text = "Time's Up!";
             Debug.Log("Time's up!");
+            Debug.Log("Total: "+score);
             return;
         }
+
         float timeRemaining = gameDuration - (Time.time - startTime);
         timerText.text = "Time: " + Mathf.Ceil(timeRemaining).ToString();  
 
