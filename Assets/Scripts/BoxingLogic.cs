@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.XR;
 using TMPro;
 using System.Timers;
 
@@ -12,6 +13,9 @@ public class BoxingLogic : MonoBehaviour
 
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI timerText;
+    public XRNode controllerHand = XRNode.RightHand;
+
+    private InputDevice controller;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -37,5 +41,29 @@ public class BoxingLogic : MonoBehaviour
         float timeRemaining = gameDuration - (Time.time - startTime);
 
         timerText.text = "Time: " + Mathf.Ceil(timeRemaining);
+    }
+
+    bool ThumbButtonPressed()
+    {
+        if(!controller.isValid)
+        {
+            controller = InputDevices.GetDeviceAtXRNode(controllerHand);
+        }
+        bool pressed;
+        if(controller.isValid && controller.TryGetFeatureValue(CommonUsages.primary2DAxisClick, out pressed))
+        {
+            return pressed;
+        }
+        return false;
+    }
+    void OnCollisionEnter(Collision collision)
+    {
+        if (!gameActive) return;
+        if(collision.collider.CompareTag("Hand") && ThumbButtonPressed())
+        {
+            score++;
+            scoreText.text = "Score: " + score;
+            Debug.Log("Punch registered! Score: "+ score);
+        }
     }
 }
