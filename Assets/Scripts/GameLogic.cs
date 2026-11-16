@@ -11,9 +11,11 @@ public class GameLogic : MonoBehaviour
     public int score = 0;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI timerText;
+    public BoxingLogic boxingLogic;
 
     private bool handsRaised = false;
     private bool gameActive = true;
+
 
     public float raiseThreshold = 0.2f;
     public float lowerThreshold = -0.3f;
@@ -38,6 +40,8 @@ public class GameLogic : MonoBehaviour
         gameActive = true;
 
         setScoreText();
+
+        boxingLogic.StartGame();
 
         timerText.text = "Time: " + gameDuration.ToString();
         Debug.Log("Game Started!");
@@ -85,6 +89,6 @@ public class GameLogic : MonoBehaviour
     }
     void setScoreText()
     {
-        scoreText.text = "Score: " + score.ToString();
+        scoreText.text = "Juming Jacks: " + score.ToString();
     }
 }

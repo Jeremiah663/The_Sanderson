@@ -20,10 +20,20 @@ public class BoxingLogic : MonoBehaviour
     void Start()
     {
         score = 0;
+        gameActive = false;
+
+        scoreText.text = "Boxing Score: " + score;
+    }
+
+    public void StartGame()
+    {
+        score = 0;
         startTime = Time.time;
         gameActive = true;
 
-        scoreText.text = "Score: " + score;
+        scoreText.text = "Boxing Score: " + score;
+
+        Debug.Log("Boxing Game Started!");
     }
 
     // Update is called once per frame
@@ -56,14 +66,13 @@ public class BoxingLogic : MonoBehaviour
         }
         return false;
     }
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Touched by " + other.name + ", tag " + other.tag);
         if (!gameActive) return;
-        if(collision.collider.CompareTag("Hand") && ThumbButtonPressed())
-        {
-            score++;
-            scoreText.text = "Score: " + score;
-            Debug.Log("Punch registered! Score: "+ score);
-        }
+        if (!other.CompareTag("Hand")) return;
+
+        score++;
+        scoreText.text = "Boxing Score: " + score;
     }
 }
